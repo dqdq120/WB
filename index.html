@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modular OOP Web Builder</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Modular Web Builder</h1>
+      <button id="export">Export HTML</button>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar left">
+        <h2>Components</h2>
+        <div id="component-palette"></div>
+      </aside>
+
+      <main id="canvas">Drop elements here...</main>
+
+      <aside class="sidebar right">
+        <h2>Properties</h2>
+        <div id="properties">Select an element</div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
