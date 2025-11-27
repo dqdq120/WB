@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Builder - Golden Layout</title>
+
+    <!-- jQuery for Golden Layout v1 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Golden Layout CSS -->
+    <link rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css">
+    <link rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-light-theme.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/builder-golden.css">
+</head>
+<body class="theme-light">
+
+<div id="top-bar">
+    <div class="menu-item" id="file-menu">
+        File
+        <div class="dropdown" id="file-dropdown">
+            <div class="dropdown-item" id="new-project">New Project</div>
+            <div class="dropdown-item" id="save-option">Save</div>
+            <div class="dropdown-item" id="open-option">Open</div>
+            <div class="dropdown-item" id="export-option">Export HTML</div>
+        </div>
+    </div>
+    
+    <div class="menu-item" id="window-menu">
+        Window
+        <div class="dropdown" id="window-dropdown">
+            <div class="dropdown-item">No closed panels</div>
+        </div>
+    </div>
+    
+    <div class="menu-item" id="theme-menu">
+        Themes
+        <div class="dropdown" id="theme-dropdown">
+            <div class="dropdown-item theme-light" data-theme="light">
+                <span class="theme-preview"></span>Light Theme
+            </div>
+            <div class="dropdown-item theme-dark" data-theme="dark">
+                <span class="theme-preview"></span>Dark Theme
+            </div>
+            <div class="dropdown-item theme-blue" data-theme="blue">
+                <span class="theme-preview"></span>Blue Theme
+            </div>
+            <div class="dropdown-item theme-green" data-theme="green">
+                <span class="theme-preview"></span>Green Theme
+            </div>
+            <div class="dropdown-item theme-purple" data-theme="purple">
+                <span class="theme-preview"></span>Purple Theme
+            </div>
+            <div class="dropdown-item theme-high-contrast" data-theme="high-contrast">
+                <span class="theme-preview"></span>High Contrast
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template Modal -->
+<div id="template-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Select a Template</div>
+        <div class="templates-grid" id="templates-grid"></div>
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px;">
+            <button id="blank-project-btn" class="modal-btn">Blank Project</button>
+            <button id="close-modal-btn" class="modal-btn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="layout-root"></div>
+
+<!-- Golden Layout JS -->
+<script src="https://golden-layout.com/files/latest/js/goldenlayout.js"></script>
+
+<!-- Builder Models -->
+<script src="builder/models/Element.js"></script>
+<script src="builder/models/Project.js"></script>
+<script src="builder/models/Templates.js"></script>
+
+<!-- Builder Services -->
+<script src="builder/services/ElementTreeService.js"></script>
+<script src="builder/services/CanvasRenderer.js"></script>
+<script src="builder/services/EnhancedCanvasRenderer.js"></script>
+<script src="builder/services/PropertiesPanel.js"></script>
+<script src="builder/services/Toolbar.js"></script>
+<script src="builder/services/AssetLibrary.js"></script>
+<script src="builder/services/ThemeEditor.js"></script>
+
+<!-- App Classes -->
+<script src="js/ThemeManager.js"></script>
+<script src="js/MenuManager.js"></script>
+
+<!-- Builder App -->
+<script src="builder/app-golden.js"></script>
+
+</body>
+</html>
