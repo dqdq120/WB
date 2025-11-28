@@ -4,128 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="//golden-layout.com/assets/js/goldenlayout.min.js"></script>
+    
     <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-base.css" />
     <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-dark-theme.css" />
-    <style>
-        body{
-            margin:0;
-            padding:0;
-            overflow:hidden;
-        }
-    h2{
-        font: 14px Arial, sans-serif;
-        color:#fff;
-        padding: 10px;
-        text-align: center;
-
-    }
-    #layout-root {
-        height: 97vh;
-        width: 100%;
-    }
-    #top-bar {
-        height: 3vh;
-        width: 100%;
-        background-color: #222;
-    }
-
-</style>
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
     <div id="top-bar"></div>
-    <div id="layout-root"></div>
-    <script>
-        class PanelManager {
-            constructor() {
-                
-            }
-        }
-        var config = {
-            settings:{
-                hasHeaders: true,
-                constrainDragToContainer: true,
-                reorderEnabled: true,
-                selectionEnabled: false,
-                popoutWholeStack: false,
-                blockedPopoutsThrowError: true,
-                closePopoutsOnUnload: true,
-                showPopoutIcon: false,
-                showMaximiseIcon: false,
-                showCloseIcon: true
-            },
-            content: [{
-                
-                labels: {
-                    close: 'close',
-                    maximise: 'maximise',
-                    minimise: 'minimise',
-                    popout: 'open in new window'
-                },
-                
-                type: 'row',
-                content:[
-                    {
-                    type: 'column',
-                    content:[
-                        {
-                        type: 'component',
-                        componentName: 'testComponent',
-                        componentState: { label: 'B' }
-                    },
-                    {
-                        type: 'component',
-                        componentName: 'testComponent',
-                        componentState: { label: 'C' }
-                    }
-                ],
-                width: 30,
-                },
-                {
-                    type: 'component',
-                    componentName: 'testComponent',
-                    componentState: { label: 'A' },
-                    width: 60,
-                },
-
-
-                {
-                    type: 'column',
-                    content:[
-                        {
-                        type: 'component',
-                        componentName: 'testComponent',
-                        componentState: { label: 'B' }
-                    },
-                    {
-                        type: 'component',
-                        componentName: 'testComponent',
-                        componentState: { label: 'C' }
-                    }
-                ],
-                width: 30,
-                },
-            ]
-        
-        
-        
-        
-            }]
-        };
-
-        var myLayout = new GoldenLayout( config ,'#layout-root');
-
-        myLayout.registerComponent( 'testComponent', function( container, componentState ){
-            container.getElement().html( '<h2>' + componentState.label + '</h2>' );
-        });
-
-        myLayout.init();
-        // Assuming you have a reference to the GoldenLayout instance
-        window.addEventListener("resize", function(e) {
-            myLayout.updateSize();
-        });
-
-    </script>
-</body>
-</html>
+        <div id="layout-root"></div>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="//golden-layout.com/assets/js/goldenlayout.min.js"></script>
+    <script src="js/panelManager.js"></script>
+    <script src="js/init.js"></script>
+     </body> 
+         </html>

@@ -1,0 +1,68 @@
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+h2{
+    font: 14px Arial, sans-serif;
+    color:#fff;
+    padding: 10px;
+    text-align: center;
+
+}
+#layout-root {
+    height: 97vh;
+    width: 100%;
+}
+#top-bar {
+    height: 3vh;
+    width: 100%;
+    background-color: #222;
+}
+
+.lm_content{
+    background-color: #222222 !important;
+}
+.lm_tab {
+    height: 29px !important;
+    border-radius: 0% !important;
+    box-shadow: none !important;
+    padding-bottom: 0px !important;
+    margin: 0% !important;
+    border: 1px solid #525252 !important;
+    border-right: none !important;
+}
+.lm_active{
+    border:none !important;
+    height: 29px !important;
+    border-top: red 2px solid !important;
+    border-left: 1px solid #525252 !important;
+    
+}
+.lm_header{
+    height: 32px !important;
+    border-bottom: 1px solid #525252 !important;
+}
+.lm_items{
+    height: calc(100% - 32px) !important; /* fills parent container */
+    border-left: 1px solid #525252 !important;
+    border-bottom: 1px solid #525252 !important;
+
+}
+.lm_items > * > * ,.lm_items>*{
+    height: 100% !important; /* fills parent container */
+}
+.lm_close{
+    background-image: url("../close.png") !important;
+    filter:invert(1) !important;
+    width: 32px !important;
+    height: 32px !important;
+    background-size: contain;
+}
+.lm_horizontal{
+    width: 2px !important;
+    height: 100% !important ;
+}
+.lm_vertical{
+    height: 1px !important;
+}
