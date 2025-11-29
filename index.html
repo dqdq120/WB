@@ -7,13 +7,52 @@
     
     <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-base.css" />
     <link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-dark-theme.css" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet"   href="css/styles.css" />
 </head>
 <body>
-    <div id="top-bar"></div>
-        <div id="layout-root"></div>
+    <div id="top-bar">
+        <div id="menu-container">
+            <button class="menu-btn" id="theme-btn">🎨 Theme</button>
+            <div class="menu-dropdown" id="theme-dropdown">
+                <div class="menu-section">
+                    <div class="menu-title">Standard Themes</div>
+                    <button class="theme-option" data-theme="dark">🌙 Dark Theme</button>
+                    <button class="theme-option" data-theme="light">☀️ Light Theme</button>
+                </div>
+                <div class="menu-divider"></div>
+                <div class="menu-section">
+                    <div class="menu-title">Preset Themes</div>
+                    <button class="preset-option" data-preset="ocean">🌊 Ocean</button>
+                    <button class="preset-option" data-preset="forest">🌲 Forest</button>
+                    <button class="preset-option" data-preset="sunset">🌅 Sunset</button>
+                    <button class="preset-option" data-preset="cyberpunk">⚡ Cyberpunk</button>
+                    <button class="preset-option" data-preset="minimalist">✨ Minimalist</button>
+                    <button class="preset-option" data-preset="nord">❄️ Nord</button>
+                    <button class="preset-option" data-preset="dracula">🧛 Dracula</button>
+                    <button class="preset-option" data-preset="monokai">🎹 Monokai</button>
+                    <button class="preset-option" data-preset="solarized_light">☀️ Solarized Light</button>
+                    <button class="preset-option" data-preset="solarized_dark">🌙 Solarized Dark</button>
+                    <button class="preset-option" data-preset="gruvbox_dark">🍂 Gruvbox Dark</button>
+                    <button class="preset-option" data-preset="one_dark">◆ One Dark</button>
+                    <button class="preset-option" data-preset="tokyo_night">🌃 Tokyo Night</button>
+                    <button class="preset-option" data-preset="material_dark">⬢ Material Dark</button>
+                </div>
+            </div>
+        </div>
+        <div id="menu-container">
+            <button class="menu-btn" id="panels-btn">📋 Panels</button>
+            <div class="menu-dropdown" id="panels-dropdown">
+                <div class="menu-section">
+                    <div class="menu-title">Open Panels</div>
+                    <div id="panels-menu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="layout-root"></div>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="//golden-layout.com/assets/js/goldenlayout.min.js"></script>
+    <script src="js/themes.js"></script>
     <script src="js/panelManager.js"></script>
     <script src="js/init.js"></script>
      </body> 
