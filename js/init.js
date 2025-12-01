@@ -13,36 +13,124 @@ document.addEventListener("DOMContentLoaded", function() {
         showCloseIcon: true
     }, layoutContainer);
 
-    // Create actual DOM elements and pass them to Panel instances
+    // ===== ADD PANEL =====
     const elemB1 = document.createElement('div');
-    elemB1.innerHTML = '<h2>Panel</h2>';
+    elemB1.className = 'add-panel-container';
+    elemB1.innerHTML = '<h2>Add Elements</h2><div class="add-elements-list"></div>';
     const panelB1 = new Panel($(elemB1)); 
     panelB1.label = 'add';
     panelManager.addPanel(panelB1, 0);
 
+    // ===== TREE NODE PANEL =====
     const elemC1 = document.createElement('div');
-    elemC1.innerHTML = '<h2>Panel</h2>';
+    elemC1.className = 'tree-panel-container';
+    elemC1.innerHTML = '<h2>Elements</h2><div class="tree-elements-list"></div>';
     const panelC1 = new Panel($(elemC1));
     panelC1.label = 'treeNode';
     panelManager.addPanel(panelC1, 0);
 
+    // ===== CANVAS PANEL =====
     const elemA = document.createElement('div');
-    elemA.innerHTML = '<h2>Panel A</h2>';
+    elemA.className = 'canvas-container';
+    elemA.innerHTML = '<div class="canvas"></div>';
     const panelA = new Panel($(elemA));
-    panelA.label = 'pageName';
+    panelA.label = 'canvas';
     panelManager.addPanel(panelA, 1);
 
+    // ===== ATTRIBUTES PANEL =====
     const elemD = document.createElement('div');
-    elemD.innerHTML = '<h2>Panel D</h2>';
+    elemD.className = 'attributes-panel-wrapper';
     const panelB2 = new Panel($(elemD));
     panelB2.label = 'attributes';
     panelManager.addPanel(panelB2, 2);
 
+    // ===== PROPERTIES PANEL =====
     const elemE = document.createElement('div');
-    elemE.innerHTML = '<h2>Panel E</h2>';
+    elemE.className = 'properties-panel-wrapper';
     const panelC2 = new Panel($(elemE));
     panelC2.label = 'properties';
     panelManager.addPanel(panelC2, 2);
+
+    // ===== INITIALIZE EDITOR SYSTEMS =====
+    const canvas = document.querySelector('.canvas');
+    const elementManager = new ElementManager(canvas);
+    const propertyPanel = new PropertyPanel(elemE);
+    const elementPropertiesPanel = new ElementPropertiesPanel(elemD);
+
+    // ===== POPULATE ADD PANEL WITH DRAGGABLE ELEMENTS =====
+    const elementTypes = [
+        { type: 'div', icon: '📦', label: 'Div' },
+        { type: 'p', icon: '📝', label: 'Paragraph' },
+        { type: 'h1', icon: '📄', label: 'Heading 1' },
+        { type: 'h2', icon: '📃', label: 'Heading 2' },
+        { type: 'h3', icon: '📋', label: 'Heading 3' },
+        { type: 'button', icon: '🔘', label: 'Button' },
+        { type: 'input', icon: '⌨️', label: 'Input' },
+        { type: 'label', icon: '🏷️', label: 'Label' },
+        { type: 'span', icon: '✂️', label: 'Span' },
+        { type: 'a', icon: '🔗', label: 'Link' },
+        { type: 'img', icon: '🖼️', label: 'Image' },
+        { type: 'ul', icon: '📋', label: 'List' },
+        { type: 'li', icon: '•', label: 'List Item' }
+    ];
+
+    const addElementsList = document.querySelector('.add-elements-list');
+    elementTypes.forEach(elem => {
+        const btn = document.createElement('div');
+        btn.className = 'add-element-btn';
+        btn.draggable = true;
+        btn.innerHTML = `<span class="elem-icon">${elem.icon}</span><span class="elem-label">${elem.label}</span>`;
+        btn.setAttribute('data-element-type', elem.type);
+
+        btn.addEventListener('dragstart', (e) => {
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', elem.type);
+        });
+
+        addElementsList.appendChild(btn);
+    });
+
+    // ===== HANDLE ELEMENT SELECTION =====
+    window.addEventListener('elementSelected', (e) => {
+        if (e.detail.element) {
+            propertyPanel.setElement(e.detail.element);
+            elementPropertiesPanel.setElement(e.detail.element);
+            updateTreePanel(elementManager, document.querySelector('.tree-elements-list'));
+        }
+    });
+
+    // ===== HANDLE ELEMENT DELETION =====
+    window.addEventListener('elementDeleted', (e) => {
+        if (e.detail.element) {
+            elementManager.removeElement(e.detail.element);
+            propertyPanel.clear();
+            elementPropertiesPanel.clear();
+            updateTreePanel(elementManager, document.querySelector('.tree-elements-list'));
+        }
+    });
+
+    // ===== UPDATE TREE PANEL =====
+    function updateTreePanel(manager, treeContainer) {
+        treeContainer.innerHTML = '';
+        const elements = manager.getAllElements();
+
+        elements.forEach(elem => {
+            const treeItem = document.createElement('div');
+            treeItem.className = 'tree-item';
+            if (elem.isSelected) treeItem.classList.add('selected');
+
+            const label = document.createElement('span');
+            label.className = 'tree-item-label';
+            label.textContent = `${elem.type} (${elem.id})`;
+
+            label.addEventListener('click', () => {
+                manager.selectElement(elem);
+            });
+
+            treeItem.appendChild(label);
+            treeContainer.appendChild(treeItem);
+        });
+    }
 
     // Initialize menus
     initializeMenus(panelManager);
