@@ -57,6 +57,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const propertyPanel = new PropertyPanel(elemE);
     const elementPropertiesPanel = new ElementPropertiesPanel(elemD);
 
+    // Keep reference to this
+
+    // Listen for Delete key globally
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Delete") {
+            elementManager.deleteSelected();
+            e.preventDefault();
+        }
+    });
+
     // ===== POPULATE ADD PANEL WITH DRAGGABLE ELEMENTS =====
     const elementTypes = [
         { type: 'div', icon: '📦', label: 'Div' },
@@ -90,16 +100,20 @@ document.addEventListener("DOMContentLoaded", function() {
         addElementsList.appendChild(btn);
     });
 
-    // ===== HANDLE ELEMENT SELECTION =====
-    window.addEventListener('elementSelected', (e) => {
-        if (e.detail.element) {
-            propertyPanel.setElement(e.detail.element);
-            elementPropertiesPanel.setElement(e.detail.element);
-            updateTreePanel(elementManager, document.querySelector('.tree-elements-list'));
+    // ===== HANDLE ELEMENT SELECTION (single and multi) =====
+    window.addEventListener('selectionChanged', (e) => {
+        const elements = e.detail.elements || [];
+        if (elements && elements.length) {
+            propertyPanel.setElements(elements);
+            elementPropertiesPanel.setElements(elements);
+        } else {
+            propertyPanel.clear();
+            elementPropertiesPanel.clear();
         }
+        updateTreePanel(elementManager, document.querySelector('.tree-elements-list'));
     });
 
-    // ===== HANDLE ELEMENT DELETION =====
+    // ===== HANDLE ELEMENT(S) DELETION =====
     window.addEventListener('elementDeleted', (e) => {
         if (e.detail.element) {
             elementManager.removeElement(e.detail.element);
@@ -109,27 +123,82 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // ===== UPDATE TREE PANEL =====
+    window.addEventListener('elementsDeleted', (e) => {
+        const elements = e.detail.elements || [];
+        if (elements.length) {
+            elements.forEach(el => elementManager.removeElement(el));
+            propertyPanel.clear();
+            elementPropertiesPanel.clear();
+            updateTreePanel(elementManager, document.querySelector('.tree-elements-list'));
+        }
+    });
+
+    // ===== UPDATE TREE PANEL (nested) =====
     function updateTreePanel(manager, treeContainer) {
         treeContainer.innerHTML = '';
-        const elements = manager.getAllElements();
 
-        elements.forEach(elem => {
+        const roots = manager.getRootElements();
+
+        function renderNode(elem, parentEl, level = 0) {
             const treeItem = document.createElement('div');
             treeItem.className = 'tree-item';
+            treeItem.style.paddingLeft = (8 + level * 12) + 'px';
             if (elem.isSelected) treeItem.classList.add('selected');
+            treeItem.draggable = true;
+            treeItem.dataset.elementId = elem.id;
 
             const label = document.createElement('span');
             label.className = 'tree-item-label';
             label.textContent = `${elem.type} (${elem.id})`;
 
-            label.addEventListener('click', () => {
-                manager.selectElement(elem);
+            label.addEventListener('click', (ev) => {
+                const additive = ev.ctrlKey || ev.metaKey;
+                manager.selectElement(elem, additive);
             });
 
             treeItem.appendChild(label);
-            treeContainer.appendChild(treeItem);
-        });
+
+            // Tree drag to reparent
+            treeItem.addEventListener('dragstart', (ev) => {
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData('text/elem-id', elem.id);
+                treeItem.style.opacity = '0.5';
+            });
+
+            treeItem.addEventListener('dragend', (ev) => {
+                treeItem.style.opacity = '1';
+            });
+
+            treeItem.addEventListener('dragover', (ev) => {
+                ev.preventDefault();
+                ev.dataTransfer.dropEffect = 'move';
+                treeItem.style.backgroundColor = 'rgba(0, 102, 204, 0.2)';
+            });
+
+            treeItem.addEventListener('dragleave', (ev) => {
+                treeItem.style.backgroundColor = '';
+            });
+
+            treeItem.addEventListener('drop', (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                treeItem.style.backgroundColor = '';
+                const draggedId = ev.dataTransfer.getData('text/elem-id');
+                const draggedEl = manager.elements.find(e => e.id === draggedId);
+                if (draggedEl && draggedEl !== elem) {
+                    manager.reparentElement(draggedEl, elem);
+                    updateTreePanel(manager, document.querySelector('.tree-elements-list'));
+                }
+            });
+
+            parentEl.appendChild(treeItem);
+
+            if (elem.children && elem.children.length) {
+                elem.children.forEach(child => renderNode(child, parentEl, level + 1));
+            }
+        }
+
+        roots.forEach(r => renderNode(r, treeContainer, 0));
     }
 
     // Initialize menus
